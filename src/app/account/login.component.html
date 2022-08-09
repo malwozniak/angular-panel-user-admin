@@ -1,5 +1,5 @@
 <div class="card">
-  <h4 class="card-header">Login</h4>
+  <h4 class="card-header">Admin</h4>
   <div class="card-body">
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
@@ -41,7 +41,7 @@
             *ngIf="loading"
             class="spinner-border spinner-border-sm mr-1"
           ></span>
-          Admin
+          Login
         </button>
         <a routerLink="../register" class="btn btn-link">User</a>
       </div>
