@@ -10,7 +10,9 @@ import {
 import { Observable, of, throwError } from 'rxjs';
 import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
 
-// array in local storage for registered users
+import { User, Role } from '../_models';
+
+
 let users = JSON.parse(localStorage.getItem('users')) || [];
 
 @Injectable()
@@ -43,7 +45,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         case url.match(/\/users\/\d+$/) && method === 'DELETE':
           return deleteUser();
         default:
-          // pass through any requests not handled above
           return next.handle(request);
       }
     }
@@ -61,6 +62,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         username: user.username,
         firstName: user.firstName,
         lastName: user.lastName,
+        role: user.role,
         token: 'fake-jwt-token',
       });
     }
@@ -79,12 +81,13 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     }
 
     function getUsers() {
-      if (!isLoggedIn()) return unauthorized();
+      if (!isAdmin()) return unauthorized();
       return ok(users);
     }
 
     function getUserById() {
       if (!isLoggedIn()) return unauthorized();
+      if (!isAdmin() && currentUser().id !== idFromUrl()) return unauthorized();
 
       const user = users.find((x) => x.id === idFromUrl());
       return ok(user);
@@ -96,12 +99,9 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       let params = body;
       let user = users.find((x) => x.id === idFromUrl());
 
-      // only update password if entered
       if (!params.password) {
         delete params.password;
       }
-
-      // update and save user
       Object.assign(user, params);
       localStorage.setItem('users', JSON.stringify(users));
 
@@ -132,6 +132,14 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     function isLoggedIn() {
       return headers.get('Authorization') === 'Bearer fake-jwt-token';
+    }
+    function isAdmin() {
+      return isLoggedIn() && currentUser().role === Role.Admin;
+    }
+    function currentUser() {
+      if (!isLoggedIn()) return;
+      const id = parseInt(headers.get('Authorization').split('.')[1]);
+      return users.find((x) => x.id === id);
     }
 
     function idFromUrl() {

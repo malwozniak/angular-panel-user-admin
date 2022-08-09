@@ -27,14 +27,24 @@
         </div>
       </div>
       <div class="form-group">
+      <label for="password">Type of Account</label>
+      <input
+        type="password"
+        formControlName="password"
+        class="form-control"
+        [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
+      />
+     
+    </div>
+      <div class="form-group">
         <button [disabled]="loading" class="btn btn-primary">
           <span
             *ngIf="loading"
             class="spinner-border spinner-border-sm mr-1"
           ></span>
-          Login
+          Admin
         </button>
-        <a routerLink="../register" class="btn btn-link">Register</a>
+        <a routerLink="../register" class="btn btn-link">User</a>
       </div>
     </form>
   </div>
