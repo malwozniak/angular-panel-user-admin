@@ -19,7 +19,6 @@ export class LoginComponent implements OnInit {
     private accountService: AccountService,
     private alertService: AlertService
   ) {
-    // redirect to home if already logged in
     if (this.accountService.userValue) {
       this.router.navigate(['/']);
     }
@@ -29,13 +28,11 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
+      role: ['', Validators.required],
     });
 
-    // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
-
-  // convenience getter for easy access to form fields
   get f() {
     return this.loginForm.controls;
   }
@@ -53,7 +50,7 @@ export class LoginComponent implements OnInit {
 
     this.loading = true;
     this.accountService
-      .login(this.f.username.value, this.f.password.value)
+      .login(this.f.username.value, this.f.password.value, this.f.role.value)
       .pipe(first())
       .subscribe(
         (data) => {

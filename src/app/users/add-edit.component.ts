@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
-
 import { AccountService, AlertService } from '../_services';
 
 @Component({ templateUrl: 'add-edit.component.html' })
@@ -25,7 +24,6 @@ export class AddEditComponent implements OnInit {
     this.id = this.route.snapshot.params['id'];
     this.isAddMode = !this.id;
 
-    // password not required in edit mode
     const passwordValidators = [Validators.minLength(6)];
     if (this.isAddMode) {
       passwordValidators.push(Validators.required);
@@ -36,7 +34,7 @@ export class AddEditComponent implements OnInit {
       lastName: ['', Validators.required],
       username: ['', Validators.required],
       password: ['', passwordValidators],
-      role: [''],
+      role: ['', Validators.required],
     });
 
     if (!this.isAddMode) {
@@ -44,26 +42,21 @@ export class AddEditComponent implements OnInit {
         .getById(this.id)
         .pipe(first())
         .subscribe((x) => {
-          this.f.firstName.setValue(x.firstName);
-          this.f.lastName.setValue(x.lastName);
-          this.f.username.setValue(x.username);
-          this.f.role.setValue(x.role);
+          this.forms.firstName.setValue(x.firstName);
+          this.forms.lastName.setValue(x.lastName);
+          this.forms.role.setValue(x.role);
+          this.forms.username.setValue(x.username);
         });
     }
   }
-
-  // convenience getter for easy access to form fields
-  get f() {
+  get forms() {
     return this.form.controls;
   }
 
   onSubmit() {
     this.submitted = true;
-
-    // reset alerts on submit
     this.alertService.clear();
 
-    // stop here if form is invalid
     if (this.form.invalid) {
       return;
     }

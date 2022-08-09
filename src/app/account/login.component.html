@@ -1,5 +1,5 @@
 <div class="card">
-  <h4 class="card-header">Admin</h4>
+  <h4 class="card-header"></h4>
   <div class="card-body">
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
@@ -27,7 +27,7 @@
         </div>
       </div>
       <div class="form-group">
-        <label for="role">Type of Account</label>
+        <label for="role">Write role, if admin: admin, else user:user</label>
         <input
           type="text"
           formControlName="role"
