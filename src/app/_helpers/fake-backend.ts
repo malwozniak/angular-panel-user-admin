@@ -54,7 +54,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
           x.username === username && x.password === password && x.role === role
       );
       if (!user) return error('Username or password or role is incorrect');
-      return ok({
+
+      return isGood({
         id: user.id,
         username: user.username,
         firstName: user.firstName,
@@ -74,12 +75,12 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       user.id = users.length ? Math.max(...users.map((x) => x.id)) + 1 : 1;
       users.push(user);
       localStorage.setItem('users', JSON.stringify(users));
-      return ok();
+      return isGood();
     }
 
     function getUsers() {
       if (!isAdmin()) return unauthorized();
-      return ok(users);
+      return isGood(users);
     }
 
     function getUserById() {
@@ -87,7 +88,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       if (!isAdmin() && currentUser().id !== idFromUrl()) return unauthorized();
 
       const user = users.find((x) => x.id === idFromUrl());
-      return ok(user);
+      return isGood(user);
     }
 
     function updateUser() {
@@ -101,8 +102,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       }
       Object.assign(user, params);
       localStorage.setItem('users', JSON.stringify(users));
-
-      return ok();
+      return isGood();
     }
 
     function deleteUser() {
@@ -110,10 +110,10 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
       users = users.filter((x) => x.id !== idFromUrl());
       localStorage.setItem('users', JSON.stringify(users));
-      return ok();
+      return isGood();
     }
 
-    function ok(body?) {
+    function isGood(body?) {
       return of(new HttpResponse({ status: 200, body }));
     }
 

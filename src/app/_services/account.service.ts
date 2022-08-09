@@ -22,12 +22,11 @@ export class AccountService {
     return this.userSubject.value;
   }
 
-  login(username, password, role) {
+  login(username, password) {
     return this.http
       .post<User>(`${environment.apiUrl}/users/authenticate`, {
         username,
         password,
-        role,
       })
       .pipe(
         map((user) => {
