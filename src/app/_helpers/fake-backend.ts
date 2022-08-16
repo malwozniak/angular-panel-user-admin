@@ -9,6 +9,7 @@ import {
 } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
+import { Role } from '../_models';
 
 let users = JSON.parse(localStorage.getItem('users')) || [];
 
@@ -59,6 +60,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         username: user.username,
         firstName: user.firstName,
         lastName: user.lastName,
+        role: user.role,
         token: 'fake-jwt-token',
       });
     }
@@ -77,17 +79,26 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     }
 
     function getUsers() {
-      if (!isLoggedIn()) return unauthorized();
+      if (!isAdmin()) return unauthorized();
       return ok(users);
     }
 
     function getUserById() {
       if (!isLoggedIn()) return unauthorized();
-
+      if (!isAdmin() && currentUser().id !== idFromUrl()) return unauthorized();
       const user = users.find((x) => x.id === idFromUrl());
       return ok(user);
     }
 
+    function isAdmin() {
+      return isLoggedIn() && currentUser().role === Role.Admin;
+    }
+
+    function currentUser() {
+      if (!isLoggedIn()) return;
+      const id = parseInt(headers.get('Authorization').split('.')[1]);
+      return users.find((x) => x.id === id);
+    }
     function updateUser() {
       if (!isLoggedIn()) return unauthorized();
 
