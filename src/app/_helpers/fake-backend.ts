@@ -84,7 +84,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     }
 
     function getUserById() {
-      if (!isLoggedIn()) return unauthorized();
+      // if (!isLoggedIn()) return unauthorized();
       //if (!isAdmin() && currentUser().id !== idFromUrl()) return unauthorized();
       const user = users.find((x) => x.id === idFromUrl());
       return ok(user);
@@ -95,22 +95,19 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     }
 
     function currentUser() {
-      if (!isLoggedIn()) return;
+      //if (!isLoggedIn()) return;
       const id = parseInt(headers.get('Authorization').split('.')[1]);
       return users.find((x) => x.id === id);
     }
     function updateUser() {
-      if (!isLoggedIn()) return unauthorized();
+      // if (!isLoggedIn()) return unauthorized();
 
       let params = body;
       let user = users.find((x) => x.id === idFromUrl());
-
-      // only update password if entered
       if (!params.password) {
         delete params.password;
       }
 
-      // update and save user
       Object.assign(user, params);
       localStorage.setItem('users', JSON.stringify(users));
 
@@ -118,9 +115,10 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     }
 
     function deleteUser() {
-      if (!isLoggedIn()) return unauthorized();
+      //if (!isLoggedIn()) return unauthorized();
 
       users = users.filter((x) => x.id !== idFromUrl());
+      console.log(users);
       localStorage.setItem('users', JSON.stringify(users));
       return ok();
     }
