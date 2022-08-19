@@ -79,13 +79,13 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     }
 
     function getUsers() {
-      if (!isAdmin()) return unauthorized();
+      // if (!isAdmin()) return unauthorized();
       return ok(users);
     }
 
     function getUserById() {
       if (!isLoggedIn()) return unauthorized();
-      if (!isAdmin() && currentUser().id !== idFromUrl()) return unauthorized();
+      //if (!isAdmin() && currentUser().id !== idFromUrl()) return unauthorized();
       const user = users.find((x) => x.id === idFromUrl());
       return ok(user);
     }
