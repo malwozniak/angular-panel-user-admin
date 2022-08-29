@@ -1,6 +1,6 @@
 # angular-admin-user-panel-5kjqoe
 
-[Edit on StackBlitz ⚡️](https://stackblitz.com/edit/angular-admin-user-panel-5kjqoe)
+[Edit on StackBlitz ⚡️](https://angular-admin-panel-user-dashboard.stackblitz.io)
 
 **Celem zadania jest utworzenie aplikacji internetowej, która zarządza danymi o użytkownikach.  
 Założenia funkcjonalne:**
