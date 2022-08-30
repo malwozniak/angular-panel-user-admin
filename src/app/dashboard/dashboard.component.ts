@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
 })
-export class Dashboard implements OnInit {
+export class DashboardComponent implements OnInit {
   constructor() {}
   startAnimationForLineChart(chart) {
     let seq: any, delays: any, durations: any;

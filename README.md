@@ -1,4 +1,4 @@
-# angular-admin-user-panel-5kjqoe
+# angular-admin-user-panel-dashboard
 
 [Edit on StackBlitz ⚡️](https://angular-admin-panel-user-dashboard.stackblitz.io)
 
