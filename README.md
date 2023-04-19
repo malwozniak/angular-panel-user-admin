@@ -2,7 +2,7 @@
 
 [Edit on StackBlitz ⚡️](https://angular-admin-panel-user-dashboard.stackblitz.io)
 
-**Aplikacja internetowej, która zarządza danymi o użytkownikach.  
+**Aplikacja internetowa, która zarządza danymi o użytkownikach.  
 Założenia funkcjonalne:**
 
 - dodawanie / edycja / usuwanie / lista użytkowników / podgląd użytkownika (dane użytkowników mogą być przechowywane w statycznym pliku JSON lub z użyciem dowolnego „fake api”), - generator haseł (A-Z, 0-9),
